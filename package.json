@@ -1,7 +1,7 @@
 {
-  "name": "image-clue-ui",
+  "name": "imageclueui",
   "version": "0.0.0",
-  "description": "Image Clue UI",
+  "description": "ImageClueUI",
   "main": "server.js",
   "author": {
     "name": ""
