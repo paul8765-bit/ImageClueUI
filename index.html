@@ -8,10 +8,51 @@
 <body>
     <h1>Hello, this is the page to generate teams and clues!</h1>
     <h2>Please enter players below:</h2>
-    <p><input name="inPlayers" /></p>
+    <p><input type="text" id="txt_inPlayers" /></p>
+    <button type="button" id="btn_players" onclick="btnPlayersClick()">Click here to submit</button>
+    <script>
+        function btnPlayersClick() {
+            var textbox = document.getElementById("txt_inPlayers");
+            var players = textbox.value;
+
+            const Http1 = new XMLHttpRequest();
+            const url1 = 'https://localhost:44354/imageclueapi/getteams/' + players;
+            Http1.open("GET", url1);
+            Http1.setRequestHeader("Access-Control-Allow-Origin", "*");
+            Http1.setRequestHeader("Access-Control-Allow-Methods", "GET, POST, PATCH, PUT, DELETE, OPTIONS");
+            Http1.setRequestHeader("Access-Control-Allow-Headers", "Origin, Content-Type, X-Auth-Token");
+            Http1.send();
+
+            Http1.onreadystatechange = (e) => {
+                console.log(Http1.responseText);
+                document.getElementById("outTeams").textContent = Http1.responseText;
+            }
+        }
+    </script>
 
     <h1>Once players are entered, teams will be allocated here:</h1>
-    <label id="outTeams" />
+    <p><label id="outTeams" /></p>
 
-</body>
-</html>
+    <h1>Now to generate the clues for each team:</h1>
+    <button type="button" id="btn_Clues" onclick="btnClues()">Click here to submit</button>
+    <script>
+        function btnClues() {
+            // Now do the clues request
+            var teams = document.getElementById("outTeams").textContent;
+            const Http2 = new XMLHttpRequest();
+            const url2 = 'https://localhost:44354/imageclueapi/getclues/' + teams;
+            Http2.open("GET", url2);
+            Http2.setRequestHeader("Access-Control-Allow-Origin", "*");
+            Http2.setRequestHeader("Access-Control-Allow-Methods", "GET, POST, PATCH, PUT, DELETE, OPTIONS");
+            Http2.setRequestHeader("Access-Control-Allow-Headers", "Origin, Content-Type, X-Auth-Token");
+            Http2.send();
+
+            Http2.onreadystatechange = (e) => {
+                console.log(Http2.responseText);
+                document.getElementById("outClues").textContent = Http2.responseText;
+            }
+        }
+    </script>
+    <p><label id="outClues" /></p>
+</body >
+</html >
