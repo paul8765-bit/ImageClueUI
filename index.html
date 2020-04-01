@@ -15,44 +15,82 @@
             var textbox = document.getElementById("txt_inPlayers");
             var players = textbox.value;
 
-            const Http1 = new XMLHttpRequest();
-            const url1 = 'https://localhost:44354/imageclueapi/getteams/' + players;
-            Http1.open("GET", url1);
-            Http1.setRequestHeader("Access-Control-Allow-Origin", "*");
-            Http1.setRequestHeader("Access-Control-Allow-Methods", "GET, POST, PATCH, PUT, DELETE, OPTIONS");
-            Http1.setRequestHeader("Access-Control-Allow-Headers", "Origin, Content-Type, X-Auth-Token");
-            Http1.send();
+            const Http = new XMLHttpRequest();
+            const url = 'https://localhost:44354/imageclueapi/getteams/' + players;
+            Http.open("GET", url);
+            Http.setRequestHeader("Access-Control-Allow-Origin", "*");
+            Http.setRequestHeader("Access-Control-Allow-Methods", "GET, POST, PATCH, PUT, DELETE, OPTIONS");
+            Http.setRequestHeader("Access-Control-Allow-Headers", "Origin, Content-Type, X-Auth-Token");
+            Http.send();
 
-            Http1.onreadystatechange = (e) => {
-                console.log(Http1.responseText);
-                document.getElementById("outTeams").textContent = Http1.responseText;
+            Http.onreadystatechange = (e) => {
+                var teamsString = Http.responseText;
+
+                // For some reason the first time this code runs, this variable is blank. If so, skip
+                if (teamsString == "") {
+                    return;
+                }
+                console.log(teamsString);
+                document.getElementById("outTeams").textContent = teamsString;
+
+                // Display the teams in a clear format
+                var teamsArray = JSON.parse(teamsString);
+                var userFriendlyTeams = "";
+                for (var teamIndex = 0; teamIndex < teamsArray.length; teamIndex++) {
+                    var currentTeam = teamsArray[teamIndex];
+                    console.log(currentTeam);
+                    userFriendlyTeams += "Team " + (teamIndex + 1) + " has " + currentTeam.length + " members\n";
+                    for (var teamMemberIndex = 0; teamMemberIndex < currentTeam.length; teamMemberIndex++) {
+                        var currentTeamMember = currentTeam[teamMemberIndex];
+                        console.log(currentTeamMember);
+                        userFriendlyTeams += "    " + currentTeamMember + "\n";
+                    }
+                }
+                document.getElementById("outTeamsUserFriendly").textContent = userFriendlyTeams;
+                document.getElementById("outTeamsUserFriendly").hidden = false;
             }
         }
     </script>
 
-    <h1>Once players are entered, teams will be allocated here:</h1>
-    <p><label id="outTeams" /></p>
+    <h2>Once players are entered, teams will be allocated here:</h2>
+    <p hidden><label id="outTeams" /></p>
+    <p><textarea id="outTeamsUserFriendly" hidden></textarea></p>
 
-    <h1>Now to generate the clues for each team:</h1>
+    <h2>Now to generate the clues for each team:</h2>
     <button type="button" id="btn_Clues" onclick="btnClues()">Click here to submit</button>
     <script>
         function btnClues() {
             // Now do the clues request
             var teams = document.getElementById("outTeams").textContent;
-            const Http2 = new XMLHttpRequest();
-            const url2 = 'https://localhost:44354/imageclueapi/getclues/' + teams;
-            Http2.open("GET", url2);
-            Http2.setRequestHeader("Access-Control-Allow-Origin", "*");
-            Http2.setRequestHeader("Access-Control-Allow-Methods", "GET, POST, PATCH, PUT, DELETE, OPTIONS");
-            Http2.setRequestHeader("Access-Control-Allow-Headers", "Origin, Content-Type, X-Auth-Token");
-            Http2.send();
+            const Http = new XMLHttpRequest();
+            const url = 'https://localhost:44354/imageclueapi/getclues/' + teams;
+            Http.open("GET", url);
+            Http.setRequestHeader("Access-Control-Allow-Origin", "*");
+            Http.setRequestHeader("Access-Control-Allow-Methods", "GET, POST, PATCH, PUT, DELETE, OPTIONS");
+            Http.setRequestHeader("Access-Control-Allow-Headers", "Origin, Content-Type, X-Auth-Token");
+            Http.send();
 
-            Http2.onreadystatechange = (e) => {
-                console.log(Http2.responseText);
-                document.getElementById("outClues").textContent = Http2.responseText;
+            Http.onreadystatechange = (e) => {
+                var cluesString = Http.responseText;
+                if (cluesString == "") {
+                    return;
+                }
+                console.log(cluesString);
+
+                // Pretty this up before displaying
+                var userFriendlyClues = "";
+                var cluesArray = JSON.parse(cluesString);
+                for (var clueIndex = 0; clueIndex < cluesArray.length; clueIndex++) {
+                    var currentClue = cluesArray[clueIndex];
+                    console.log(currentClue);
+                    userFriendlyClues += "Team " + (clueIndex + 1) + ": please draw a " + currentClue.Adjective + " " + currentClue.Noun + "\n";
+                }
+
+                document.getElementById("outClues").textContent = userFriendlyClues;
+                document.getElementById("outClues").hidden = false;
             }
         }
     </script>
-    <p><label id="outClues" /></p>
-</body >
+    <p><textarea id="outClues" hidden></textarea></p>
+</body>
 </html >
