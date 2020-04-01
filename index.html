@@ -16,7 +16,7 @@
             var players = textbox.value;
 
             const Http = new XMLHttpRequest();
-            const url = 'https://localhost:44354/imageclueapi/getteams/' + players;
+            const url = 'http://35.179.62.132:44354/imageclueapi/getteams/' + players;
             Http.open("GET", url);
             Http.setRequestHeader("Access-Control-Allow-Origin", "*");
             Http.setRequestHeader("Access-Control-Allow-Methods", "GET, POST, PATCH, PUT, DELETE, OPTIONS");
@@ -63,7 +63,7 @@
             // Now do the clues request
             var teams = document.getElementById("outTeams").textContent;
             const Http = new XMLHttpRequest();
-            const url = 'https://localhost:44354/imageclueapi/getclues/' + teams;
+            const url = 'http://35.179.62.132:44354/imageclueapi/getclues/' + teams;
             Http.open("GET", url);
             Http.setRequestHeader("Access-Control-Allow-Origin", "*");
             Http.setRequestHeader("Access-Control-Allow-Methods", "GET, POST, PATCH, PUT, DELETE, OPTIONS");
