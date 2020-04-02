@@ -9,15 +9,15 @@
 <body> 
     <h1>Hello, this is the page to generate teams and clues!</h1>
     <h2>Please enter players below:</h2>
-    <p><input type="text" id="txt_inPlayers" /></p>
+    <p><textarea id="txt_inPlayers" rows="10" cols="50" ></textarea></p>
     <button type="button" id="btn_players" onclick="btnPlayersClick()">Click here to submit</button>
 
     <h2>Once players are entered, teams will be allocated here:</h2>
     <p hidden><label id="outTeams" /></p>
-    <p><textarea id="outTeamsUserFriendly" hidden></textarea></p>
+    <p><textarea id="outTeamsUserFriendly" rows="10" cols="50" hidden></textarea></p>
 
     <h2>Now to generate the clues for each team:</h2>
     <button type="button" id="btn_Clues" onclick="btnClues()">Click here to submit</button>
-    <p><textarea id="outClues" hidden></textarea></p>
+    <p><textarea id="outClues" rows="10" cols="50" hidden></textarea></p>
 </body>
 </html >
