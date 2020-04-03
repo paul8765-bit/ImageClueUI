@@ -1,3 +1,6 @@
+exports.getPlayersInput = getPlayersInput;
+exports.getUrl = getUrl;
+
 async function btnPlayersClick() {
     var players = getPlayersInput(document.getElementById("txt_inPlayers").value);
     var teamsString = await sendImageClueApiRequest("getteams", players);
@@ -53,8 +56,21 @@ function getTeamsInput() {
 }
 
 async function sendImageClueApiRequest(apiMethod, apiParameter) {
-    const url = 'http://35.179.62.132:44354/imageclueapi/' + apiMethod + '/' + apiParameter;
-    const ourHeaders = new Headers();
+    const url = getUrl(apiMethod, apiParameter);
+    let fetchData = getApiHeadersAndFetchData();
+    let response = await fetch(url, fetchData);
+    let data = await response.text();
+    var responseString = data;
+    console.log(responseString);
+    return responseString;
+}
+
+function getUrl(apiMethod, apiParameter) {
+    return 'http://35.179.62.132:44354/imageclueapi/' + apiMethod + '/' + apiParameter;
+}
+
+function getApiHeadersAndFetchData() {
+    var ourHeaders = new Headers();
     ourHeaders.append("Access-Control-Allow-Origin", "*");
     ourHeaders.append("Access-Control-Allow-Methods", "GET, POST, PATCH, PUT, DELETE, OPTIONS");
     ourHeaders.append("Access-Control-Allow-Headers", "Origin, Content-Type, X-Auth-Token");
@@ -62,12 +78,7 @@ async function sendImageClueApiRequest(apiMethod, apiParameter) {
         method: 'GET',
         headers: ourHeaders
     }
-
-    let response = await fetch(url, fetchData);
-    let data = await response.text();
-    var responseString = data;
-    console.log(responseString);
-    return responseString;
+    return fetchData;
 }
 
 function getUserFriendlyClues(cluesString) {
