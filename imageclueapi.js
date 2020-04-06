@@ -1,5 +1,6 @@
 exports.getPlayersInput = getPlayersInput;
 exports.getUrl = getUrl;
+exports.getUserFriendlyTeams = getUserFriendlyTeams;
 
 async function btnPlayersClick() {
     var players = getPlayersInput(document.getElementById("txt_inPlayers").value);
