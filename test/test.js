@@ -23,4 +23,12 @@ describe('Test getting the URL for the request', function () {
         assert.equal(imageclueapi.getUrl('getclues', '[[%22paul%22,%22roger%22],[%22chris%22,%22steve%22],[%22emily%22,%22hicksy%22]]'),
             'http://35.179.62.132:44354/imageclueapi/getclues/[[%22paul%22,%22roger%22],[%22chris%22,%22steve%22],[%22emily%22,%22hicksy%22]]');
     });
-})
+});
+
+describe('Test getting user friendly teams', function () {
+    it('Test successful response', function () {
+        var input = '[["Paul","Joe"],["Chris","Emily"]]';
+        var response = imageclueapi.getUserFriendlyTeams(input);
+        assert.equal(response, 'Team 1 has 2 members\n    Paul\n    Joe\nTeam 2 has 2 members\n    Chris\n    Emily\n');
+    })
+});
