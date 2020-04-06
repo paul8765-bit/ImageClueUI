@@ -67,7 +67,7 @@ async function sendImageClueApiRequest(apiMethod, apiParameter) {
 }
 
 function getUrl(apiMethod, apiParameter) {
-    return 'http://35.179.62.132:44354/imageclueapi/' + apiMethod + '/' + apiParameter;
+    return 'http://127.0.0.1:44354/imageclueapi/' + apiMethod + '/' + apiParameter;
 }
 
 function getApiHeadersAndFetchData() {
