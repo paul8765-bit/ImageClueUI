@@ -25,7 +25,7 @@ function getUserFriendlyTeams(teamsString) {
         var currentTeam = teamsArray[teamIndex];
         console.log(currentTeam);
         userFriendlyTeams += "Team " + (teamIndex + 1) + " has " + currentTeam.length + " members\n";
-        for (var teamMemberIndex = 0; teamMemberIndex < currentTeam.length; teamMemberIndex++) {
+        for (var teamMemberIndex = 0; teamMemberIndex < currentTeam.length - 1; teamMemberIndex++) {
             var currentTeamMember = currentTeam[teamMemberIndex];
             console.log(currentTeamMember);
             userFriendlyTeams += "    " + currentTeamMember + "\n";
