@@ -11,8 +11,8 @@ function btnAddRows() {
     var cell2 = row.insertCell(1);
 
     // Add some text to the new cells:
-    cell1.innerHTML = '<div contenteditable="">player</div>';
-    cell2.innerHTML = '<div contenteditable="">+44</div>';
+    cell1.innerHTML = '<div name="tbl_editable_fields" contenteditable="">player</div>';
+    cell2.innerHTML = '<div name="tbl_editable_fields" contenteditable="">+44</div>';
 }
 
 async function btnPlayersClick() {
