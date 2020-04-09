@@ -1,18 +1,6 @@
 var assert = require('assert');
 const imageclueapi = require('../imageclueapi');
 
-describe('Test get players input', function () {
-    it('should return names with pipe separators', function () {
-        assert.equal(imageclueapi.getPlayersInput('Paul\nEmily'), 'Paul|Emily');
-    });
-    it('should return input if newline is not present', function () {
-        assert.equal(imageclueapi.getPlayersInput('Paul&Emily'), 'Paul&Emily');
-    });
-    it('longer list of names, including spaces', function () {
-        assert.equal(imageclueapi.getPlayersInput('Paul\nEmily\nBen\nWinnie'), 'Paul|Emily|Ben|Winnie');
-    });
-});
-
 describe('Test getting the URL for the request', function () {
     it('should return URL for getteams', function () {
         var url = imageclueapi.getUrl('getteams', 'Paul|Emily');
@@ -30,5 +18,17 @@ describe('Test getting user friendly teams', function () {
         var input = '[["Paul","Joe"],["Chris","Emily"]]';
         var response = imageclueapi.getUserFriendlyTeams(input);
         assert.equal(response, 'Team 1 has 2 members\n    Paul\n    Joe\nTeam 2 has 2 members\n    Chris\n    Emily\n');
+    })
+});
+
+describe('Test converting an array to a pipe-separated string', function () {
+    it('Test successful conversion', function () {
+        var input = new Array(4);
+        input[0] = 'Paul';
+        input[1] = 'Chris';
+        input[2] = 'Joe';
+        input[3] = 'Emily';
+        var response = imageclueapi.convertArrayToPipeSeparatedString(input);
+        assert.equal(response, 'Paul|Chris|Joe|Emily');
     })
 });

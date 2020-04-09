@@ -1,9 +1,22 @@
-exports.getPlayersInput = getPlayersInput;
+exports.convertArrayToPipeSeparatedString = convertArrayToPipeSeparatedString;
 exports.getUrl = getUrl;
 exports.getUserFriendlyTeams = getUserFriendlyTeams;
 
+function btnAddRows() {
+    var table = document.getElementById("tbl_Players");
+    var row = table.insertRow(table.rows.length);
+
+    // Insert new cells (<td> elements) at the 1st and 2nd position of the "new" <tr> element:
+    var cell1 = row.insertCell(0);
+    var cell2 = row.insertCell(1);
+
+    // Add some text to the new cells:
+    cell1.innerHTML = '<div contenteditable="">player</div>';
+    cell2.innerHTML = '<div contenteditable="">+44</div>';
+}
+
 async function btnPlayersClick() {
-    var players = getPlayersInput(document.getElementById("txt_inPlayers").value);
+    var players = getPlayersOnly(document.getElementById("tbl_Players"));
     var teamsString = await sendImageClueApiRequest("getteams", players);
 
     // Store this raw JSON in a hidden field so we can submit it to the API later
@@ -14,8 +27,59 @@ async function btnPlayersClick() {
     setElementTextContent("outTeamsUserFriendly", userFriendlyTeams);
 }
 
-function getPlayersInput(rawInput) {
-    return rawInput.replace(/\n/g, "|");
+function getPlayersOnly(table) {
+    //gets rows of table
+    var rowsArray = table.rows;
+
+    // Player 1d array
+    var playerArray = new Array(rowsArray.length - 1);
+
+    //loops through rows (skipping the header row)   
+    for (currentRowIndex = 1; currentRowIndex < rowsArray.length; currentRowIndex++) {
+
+        //gets cells of current row  
+        var currentRowCells = rowsArray[currentRowIndex].cells;
+
+        // Assume that name is the first cell
+        playerArray[currentRowIndex - 1] = currentRowCells[0].innerText;
+    }
+    return convertArrayToPipeSeparatedString(playerArray);
+}
+
+function convertArrayToPipeSeparatedString(playerArray) {
+    var playerString = "";
+    for (var playerIndex = 0; playerIndex < playerArray.length; playerIndex++) {
+        playerString += playerArray[playerIndex];
+        if (playerIndex + 1 < playerArray.length) {
+            playerString += "|";
+        }
+    }
+    return playerString;
+}
+
+function getPlayersAndMobileNumbers(table) {
+    //gets rows of table
+    var rowsArray = table.rows;
+
+    // Player/phone 2d array
+    var playerPhoneArray = new Array(rowsArray.length - 1);
+
+    //loops through rows (skipping the header row)   
+    for (currentRowIndex = 1; currentRowIndex < rowsArray.length; currentRowIndex++) {
+
+        //gets cells of current row  
+        var currentRowCells = rowsArray[currentRowIndex].cells;
+
+        var currentPlayerAndPhone = new Array(currentRowCells.length);
+
+        //loops through each cell in current row
+        for (var currentCellIndex = 0; currentCellIndex < currentRowCells.length; currentCellIndex++) {
+            currentPlayerAndPhone[currentCellIndex] = currentRowCells[currentCellIndex].innerText;
+        }
+
+        playerPhoneArray[currentRowIndex - 1] = currentPlayerAndPhone;
+    }
+    return playerPhoneArray;
 }
 
 function getUserFriendlyTeams(teamsString) {
