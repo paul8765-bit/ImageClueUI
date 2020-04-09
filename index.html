@@ -6,11 +6,21 @@
     <title>Generate Teams and Clues!</title>
     <script type="text/javascript" src="imageclueapi.js"></script>
 </head>
-<body> 
+<body>
     <h1>Hello, this is the page to generate teams and clues!</h1>
-	<h2>By Paul Dickson</h2>
+    <h2>By Paul Dickson</h2>
     <h2>Please enter players below:</h2>
-    <p><textarea id="txt_inPlayers" rows="10" cols="50" ></textarea></p>
+    <button type="button" id="btn_addRows" onclick="btnAddRows()">Add rows</button>
+    <table id="tbl_Players" border="1">
+        <thead>
+            <tr><th>Player Name</th><th>Player Mobile Number</th></tr>
+        </thead>
+        <tbody>
+            <tr><td><div contenteditable>player</div></td><td><div contenteditable>+44</div></td></tr>
+            <tr><td><div contenteditable>player</div></td><td><div contenteditable>+44</div></td></tr>
+            <tr><td><div contenteditable>player</div></td><td><div contenteditable>+44</div></td></tr>
+        </tbody>
+    </table>
     <button type="button" id="btn_players" onclick="btnPlayersClick()">Click here to submit</button>
 
     <h2>Once players are entered, teams will be allocated here:</h2>
