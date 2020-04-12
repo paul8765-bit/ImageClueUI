@@ -15,7 +15,7 @@ describe('Test getting the URL for the request', function () {
 
 describe('Test getting user friendly teams', function () {
     it('Test successful response', function () {
-        var input = '[["Paul","Joe"],["Chris","Emily"]]';
+        var input = '[[{\"Item1\":\"Paul\",\"Item2\":\"447986869466\"},{\"Item1\":\"Joe\",\"Item2\":\"447986869466\"}],[{\"Item1\":\"Chris\",\"Item2\":\"447986869466\"},{\"Item1\":\"Emily\",\"Item2\":\"447986869466\"}]]';
         var response = imageclueapi.getUserFriendlyTeams(input);
         assert.equal(response, 'Team 1 has 2 members\n    Paul\n    Joe\nTeam 2 has 2 members\n    Chris\n    Emily\n');
     })
