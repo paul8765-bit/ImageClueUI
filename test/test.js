@@ -15,20 +15,28 @@ describe('Test getting the URL for the request', function () {
 
 describe('Test getting user friendly teams', function () {
     it('Test successful response', function () {
-        var input = '[["Paul","Joe"],["Chris","Emily"]]';
+        var input = '[[{\"Item1\":\"Paul\",\"Item2\":\"447986869466\"},{\"Item1\":\"Joe\",\"Item2\":\"447986869466\"}],[{\"Item1\":\"Chris\",\"Item2\":\"447986869466\"},{\"Item1\":\"Emily\",\"Item2\":\"447986869466\"}]]';
         var response = imageclueapi.getUserFriendlyTeams(input);
         assert.equal(response, 'Team 1 has 2 members\n    Paul\n    Joe\nTeam 2 has 2 members\n    Chris\n    Emily\n');
     })
 });
 
-describe('Test converting an array to a pipe-separated string', function () {
+describe('Test conversion of player input into the C Sharp Tuple format', function () {
     it('Test successful conversion', function () {
-        var input = new Array(4);
-        input[0] = 'Paul';
-        input[1] = 'Chris';
-        input[2] = 'Joe';
-        input[3] = 'Emily';
-        var response = imageclueapi.convertArrayToPipeSeparatedString(input);
-        assert.equal(response, 'Paul|Chris|Joe|Emily');
+        var output = imageclueapi.createCSharpTuple('Paul', '441111');
+        assert.equal(output, '{"Item1":"Paul","Item2":"441111"}');
+    })
+});
+
+describe('Test conversion of the players to a full JSON of players', function () {
+    it('Test successful conversion', function () {
+        var playerArray = new Array(4);
+        playerArray[0] = '{"Item1":"Paul","Item2":"441111"}';
+        playerArray[1] = '{"Item1":"Ben","Item2":"442222"}';
+        playerArray[2] = '{"Item1":"Chris","Item2":"443333"}';
+        playerArray[3] = '{"Item1":"Emily","Item2":"444444"}';
+        var output = imageclueapi.convertTupleArrayToJSON(playerArray);
+        var expected = '[{"Item1":"Paul","Item2":"441111"},{"Item1":"Ben","Item2":"442222"},{"Item1":"Chris","Item2":"443333"},{"Item1":"Emily","Item2":"444444"}]';
+        assert.equal(output, expected);
     })
 });

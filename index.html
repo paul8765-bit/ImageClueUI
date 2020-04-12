@@ -16,9 +16,9 @@
             <tr><th>Player Name</th><th>Player Mobile Number</th></tr>
         </thead>
         <tbody>
-            <tr><td><div name="tbl_editable_name_fields" contenteditable>player</div></td><td><div name="tbl_editable_phone_fields" contenteditable>+44</div></td></tr>
-            <tr><td><div name="tbl_editable_name_fields" contenteditable>player</div></td><td><div name="tbl_editable_phone_fields" contenteditable>+44</div></td></tr>
-            <tr><td><div name="tbl_editable_name_fields" contenteditable>player</div></td><td><div name="tbl_editable_phone_fields" contenteditable>+44</div></td></tr>
+            <tr><td><div name="tbl_editable_name_fields" contenteditable>player</div></td><td><div name="tbl_editable_phone_fields" contenteditable>44</div></td></tr>
+            <tr><td><div name="tbl_editable_name_fields" contenteditable>player</div></td><td><div name="tbl_editable_phone_fields" contenteditable>44</div></td></tr>
+            <tr><td><div name="tbl_editable_name_fields" contenteditable>player</div></td><td><div name="tbl_editable_phone_fields" contenteditable>44</div></td></tr>
         </tbody>
     </table>
     <button type="button" id="btn_players" onclick="btnPlayersClick()">Click here to submit</button>
@@ -29,6 +29,11 @@
 
     <h2>Now to generate the clues for each team:</h2>
     <button type="button" id="btn_Clues" onclick="btnClues()">Click here to submit</button>
+    <p hidden><label id="outCluesHidden" /></p>
     <p><textarea id="outClues" rows="10" cols="50" hidden></textarea></p>
+
+    <h2>Click here to send the SMS clues out to each team member</h2>
+    <button type="button" id="btn_sendSMS" onclick="btnSendSMS()">Click here to send</button>
+    <p><label id="outSendSMSStatus" hidden></label></p>
 </body>
 </html >

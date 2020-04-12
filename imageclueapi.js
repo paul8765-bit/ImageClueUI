@@ -1,6 +1,7 @@
-exports.convertArrayToPipeSeparatedString = convertArrayToPipeSeparatedString;
 exports.getUrl = getUrl;
 exports.getUserFriendlyTeams = getUserFriendlyTeams;
+exports.createCSharpTuple = createCSharpTuple;
+exports.convertTupleArrayToJSON = convertTupleArrayToJSON;
 
 function btnAddRows() {
     var table = document.getElementById("tbl_Players");
@@ -12,11 +13,11 @@ function btnAddRows() {
 
     // Add some text to the new cells:
     cell1.innerHTML = '<div name="tbl_editable_name_fields" contenteditable="">player</div>';
-    cell2.innerHTML = '<div name="tbl_editable_phone_fields" contenteditable="">+44</div>';
+    cell2.innerHTML = '<div name="tbl_editable_phone_fields" contenteditable="">44</div>';
 }
 
 async function btnPlayersClick() {
-    var players = getPlayersOnly(document.getElementById("tbl_Players"));
+    var players = getPlayersAndPhones(document.getElementById("tbl_Players"));
     var teamsString = await sendImageClueApiRequest("getteams", players);
 
     // Store this raw JSON in a hidden field so we can submit it to the API later
@@ -27,7 +28,14 @@ async function btnPlayersClick() {
     setElementTextContent("outTeamsUserFriendly", userFriendlyTeams);
 }
 
-function getPlayersOnly(table) {
+async function btnSendSMS() {
+    var teams = getElementTextContent("outTeams");
+    var clues = getElementTextContent("outCluesHidden");
+    var smsSendResult = await sendImageClueApiRequest("sendsms", teams + '|' + clues);
+    setElementTextContent("outSendSMSStatus", smsSendResult);
+}
+
+function getPlayersAndPhones(table) {
     //gets rows of table
     var rowsArray = table.rows;
 
@@ -41,20 +49,29 @@ function getPlayersOnly(table) {
         var currentRowCells = rowsArray[currentRowIndex].cells;
 
         // Assume that name is the first cell
-        playerArray[currentRowIndex - 1] = currentRowCells[0].innerText;
+        var currentPlayerName = currentRowCells[0].innerText;
+        var currentPlayerPhone = currentRowCells[1].innerText;
+        var tuple = createCSharpTuple(currentPlayerName, currentPlayerPhone);
+        playerArray[currentRowIndex - 1] = tuple;
     }
-    return convertArrayToPipeSeparatedString(playerArray);
+    return convertTupleArrayToJSON(playerArray);
 }
 
-function convertArrayToPipeSeparatedString(playerArray) {
-    var playerString = "";
-    for (var playerIndex = 0; playerIndex < playerArray.length; playerIndex++) {
-        playerString += playerArray[playerIndex];
+function createCSharpTuple(currentPlayerName, currentPlayerPhone) {
+    return '{"Item1":"' + currentPlayerName + '","Item2":"' + currentPlayerPhone + '"}';
+}
+
+function convertTupleArrayToJSON(playerArray) {
+    var output = '[';
+    for (playerIndex = 0; playerIndex < playerArray.length; playerIndex++) {
+        var currentPlayer = playerArray[playerIndex];
+        output += currentPlayer;
         if (playerIndex + 1 < playerArray.length) {
-            playerString += "|";
+            output += ',';
         }
     }
-    return playerString;
+    output += ']';
+    return output;
 }
 
 function getPlayersAndMobileNumbers(table) {
@@ -92,7 +109,7 @@ function getUserFriendlyTeams(teamsString) {
         for (var teamMemberIndex = 0; teamMemberIndex < currentTeam.length; teamMemberIndex++) {
             var currentTeamMember = currentTeam[teamMemberIndex];
             console.log(currentTeamMember);
-            userFriendlyTeams += "    " + currentTeamMember + "\n";
+            userFriendlyTeams += "    " + currentTeamMember.Item1 + "\n";
         }
     }
     return userFriendlyTeams;
@@ -111,6 +128,7 @@ async function btnClues() {
     // Now do the clues request
     var teams = getTeamsInput();
     var cluesString = await sendImageClueApiRequest("getclues", teams);
+    setElementTextContent("outCluesHidden", cluesString);
     var userFriendlyClues = getUserFriendlyClues(cluesString);
     setElementTextContent("outClues", userFriendlyClues);
 }
@@ -131,7 +149,9 @@ async function sendImageClueApiRequest(apiMethod, apiParameter) {
 }
 
 function getUrl(apiMethod, apiParameter) {
-    return 'http://52.6.180.102:44354/imageclueapi/' + apiMethod + '/' + apiParameter;
+    //const proxyUrl = 'https://cors-anywhere.herokuapp.com/';
+    const myUrl = 'http://52.6.180.102:44354/imageclueapi/';
+    return myUrl + apiMethod + '/' + apiParameter;
 }
 
 function getApiHeadersAndFetchData() {
