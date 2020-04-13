@@ -31,8 +31,19 @@ async function btnPlayersClick() {
 async function btnSendSMS() {
     var teams = getElementTextContent("outTeams");
     var clues = getElementTextContent("outCluesHidden");
-    var smsSendResult = await sendImageClueApiRequest("sendsms", teams + '|' + clues);
-    setElementTextContent("outSendSMSStatus", smsSendResult);
+    try {
+        var smsSendResult = await sendImageClueApiRequest("sendsms", teams + '|' + clues);
+        if (smsSendResult === 'true') {
+            setElementTextContent("outSendSMSStatus", 'Successfully sent SMS messages!');
+        }
+        else {
+            setElementTextContent("outSendSMSStatus", 'Failed to send one or more SMS messages');
+        }
+    }
+    catch (err) {
+        console.log(err);
+        setElementTextContent("outSendSMSStatus", err);
+    }
 }
 
 function getPlayersAndPhones(table) {
