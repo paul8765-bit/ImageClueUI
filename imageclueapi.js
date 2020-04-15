@@ -160,8 +160,7 @@ async function sendImageClueApiRequest(apiMethod, apiParameter) {
 }
 
 function getUrl(apiMethod, apiParameter) {
-    //const proxyUrl = 'https://cors-anywhere.herokuapp.com/';
-    const myUrl = 'http://52.6.180.102:44354/imageclueapi/';
+    const myUrl = 'https://imageclue.co.uk:44354/imageclueapi/';
     return myUrl + apiMethod + '/' + apiParameter;
 }
 

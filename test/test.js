@@ -4,12 +4,12 @@ const imageclueapi = require('../imageclueapi');
 describe('Test getting the URL for the request', function () {
     it('should return URL for getteams', function () {
         var url = imageclueapi.getUrl('getteams', 'Paul|Emily');
-        var expected = 'http://52.6.180.102:44354/imageclueapi/getteams/Paul|Emily';
+        var expected = 'https://imageclue.co.uk:44354/imageclueapi/getteams/Paul|Emily';
         assert.equal(url, expected);
     });
     it('should return URL for getclues', function () {
         assert.equal(imageclueapi.getUrl('getclues', '[[%22paul%22,%22roger%22],[%22chris%22,%22steve%22],[%22emily%22,%22hicksy%22]]'),
-            'http://52.6.180.102:44354/imageclueapi/getclues/[[%22paul%22,%22roger%22],[%22chris%22,%22steve%22],[%22emily%22,%22hicksy%22]]');
+            'https://imageclue.co.uk:44354/imageclueapi/getclues/[[%22paul%22,%22roger%22],[%22chris%22,%22steve%22],[%22emily%22,%22hicksy%22]]');
     });
 });
 
