@@ -1,3 +1,4 @@
+var exports = {};
 exports.getUrl = getUrl;
 exports.getUserFriendlyTeams = getUserFriendlyTeams;
 exports.createCSharpTuple = createCSharpTuple;
