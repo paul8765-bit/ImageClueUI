@@ -21,6 +21,9 @@ ADD ca_bundle.crt /etc/nginx/certs/
 ADD certificate.crt /etc/nginx/certs/
 ADD private.key /etc/nginx/certs/
 
+# Add mime.types 
+ADD mime.types /etc/nginx/conf/
+
 # Use the Linux Alpine to install bash, nodejs, and npm
 RUN apk update
 RUN apk upgrade
