@@ -1,7 +1,12 @@
-exports.getUrl = getUrl;
-exports.getUserFriendlyTeams = getUserFriendlyTeams;
-exports.createCSharpTuple = createCSharpTuple;
-exports.convertTupleArrayToJSON = convertTupleArrayToJSON;
+try {
+    exports.getUrl = getUrl;
+    exports.getUserFriendlyTeams = getUserFriendlyTeams;
+    exports.createCSharpTuple = createCSharpTuple;
+    exports.convertTupleArrayToJSON = convertTupleArrayToJSON;
+}
+catch (err) {
+    // Expect this to throw an exception in browser, but the code works in Mocha
+}
 
 function btnAddRows() {
     var table = document.getElementById("tbl_Players");
