@@ -160,8 +160,34 @@ async function sendImageClueApiRequest(apiMethod, apiParameter) {
 }
 
 function getUrl(apiMethod, apiParameter) {
-    const myUrl = 'https://imageclue.co.uk:44354/imageclueapi/';
+    var myUrl;
+    var environment = getURLParam();
+    // If we're in UAT, access the UAT API
+    if (environment != null && (environment === 'uat' || environment === 'UAT')) {
+        myUrl = 'https://34.193.188.174:44354/imageclueapi/'
+    }
+    else {
+        myUrl = 'https://imageclue.co.uk:44354/imageclueapi/';
+    }
     return myUrl + apiMethod + '/' + apiParameter;
+}
+
+function getURLParam() {
+    try {
+        const queryString = window.location.search;
+        const urlParams = new URLSearchParams(queryString);
+        var environment = urlParams.get("environment");
+        if (environment != null && environment != '') {
+            return environment;
+        }
+        // Default is no env
+        return null;
+    }
+    catch (err) {
+        // Default is no env
+        return null;
+    }
+    
 }
 
 function getApiHeadersAndFetchData() {
