@@ -23,20 +23,20 @@ function btnAddRows() {
 
 async function btnPlayersClick() {
     var players = getPlayersAndPhones(document.getElementById("tbl_Players"));
-    var teamsString = await sendImageClueApiRequest("getteams", players);
+    var teamID = await sendImageClueApiRequest("getteams", players);
 
-    // Store this raw JSON in a hidden field so we can submit it to the API later
-    setElementTextContent("outTeams", teamsString);
+    // Store this teamsID in a hidden field so we can submit it to the API later
+    setElementTextContent("outTeams", teamID);
 
     // Display the teams in a clear format
-    var userFriendlyTeams = getUserFriendlyTeams(teamsString);
-    setElementTextContent("outTeamsUserFriendly", userFriendlyTeams);
+    var userFriendlyTeams = await sendImageClueApiRequest("getteamsdetails", teamID);
+    setElementMultiLineContent("outTeamsUserFriendly", userFriendlyTeams);
 }
 
 async function btnSendSMS() {
-    var teams = getElementTextContent("outTeams");
-    var clues = getElementTextContent("outCluesHidden");
-    var smsSendResult = await sendImageClueApiRequest("sendsms", teams + '|' + clues);
+    var teamsID = getElementTextContent("outTeams");
+    var cluesID = getElementTextContent("outCluesHidden");
+    var smsSendResult = await sendImageClueApiRequest("sendsms", teamsID + '/' + cluesID);
     if (smsSendResult === 'true') {
         setElementTextContent("outSendSMSStatus", 'Successfully sent SMS messages!');
     }
@@ -110,24 +110,14 @@ function getPlayersAndMobileNumbers(table) {
     return playerPhoneArray;
 }
 
-function getUserFriendlyTeams(teamsString) {
-    var teamsArray = JSON.parse(teamsString);
-    var userFriendlyTeams = "";
-    for (var teamIndex = 0; teamIndex < teamsArray.length; teamIndex++) {
-        var currentTeam = teamsArray[teamIndex];
-        console.log(currentTeam);
-        userFriendlyTeams += "Team " + (teamIndex + 1) + " has " + currentTeam.length + " members\n";
-        for (var teamMemberIndex = 0; teamMemberIndex < currentTeam.length; teamMemberIndex++) {
-            var currentTeamMember = currentTeam[teamMemberIndex];
-            console.log(currentTeamMember);
-            userFriendlyTeams += "    " + currentTeamMember.Item1 + "\n";
-        }
-    }
-    return userFriendlyTeams;
-}
-
 function getElementTextContent(elementId) {
     return document.getElementById(elementId).textContent;
+}
+
+function setElementMultiLineContent(elementId, text) {
+    text = text.replace(/"/g, "");
+    text = text.replace(/\\n/g, "&#013;");
+    document.getElementById(elementId).innerHTML = text;
 }
 
 function setElementTextContent(elementId, text) {
@@ -138,10 +128,10 @@ function setElementTextContent(elementId, text) {
 async function btnClues() {
     // Now do the clues request
     var teams = getTeamsInput();
-    var cluesString = await sendImageClueApiRequest("getclues", teams);
-    setElementTextContent("outCluesHidden", cluesString);
-    var userFriendlyClues = getUserFriendlyClues(cluesString);
-    setElementTextContent("outClues", userFriendlyClues);
+    var cluesID = await sendImageClueApiRequest("getclues", teams);
+    setElementTextContent("outCluesHidden", cluesID);
+    var userFriendlyClues = await sendImageClueApiRequest("getcluesdetails", cluesID);
+    setElementMultiLineContent("outClues", userFriendlyClues);
 }
 
 function getTeamsInput() {
@@ -176,7 +166,7 @@ function getURLParam() {
     try {
         const queryString = window.location.search;
         const urlParams = new URLSearchParams(queryString);
-        var environment = urlParams.get("environment");
+        var environment = urlParams.get("env");
         if (environment != null && environment != '') {
             return environment;
         }
@@ -200,15 +190,4 @@ function getApiHeadersAndFetchData() {
         headers: ourHeaders
     }
     return fetchData;
-}
-
-function getUserFriendlyClues(cluesString) {
-    var userFriendlyClues = "";
-    var cluesArray = JSON.parse(cluesString);
-    for (var clueIndex = 0; clueIndex < cluesArray.length; clueIndex++) {
-        var currentClue = cluesArray[clueIndex];
-        console.log(currentClue);
-        userFriendlyClues += "Team " + (clueIndex + 1) + ": please draw a " + currentClue.Adjective + " " + currentClue.Noun + "\n";
-    }
-    return userFriendlyClues;
 }
