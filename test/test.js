@@ -13,14 +13,6 @@ describe('Test getting the URL for the request', function () {
     });
 });
 
-describe('Test getting user friendly teams', function () {
-    it('Test successful response', function () {
-        var input = '[[{\"Item1\":\"Paul\",\"Item2\":\"447986869466\"},{\"Item1\":\"Joe\",\"Item2\":\"447986869466\"}],[{\"Item1\":\"Chris\",\"Item2\":\"447986869466\"},{\"Item1\":\"Emily\",\"Item2\":\"447986869466\"}]]';
-        var response = imageclueapi.getUserFriendlyTeams(input);
-        assert.equal(response, 'Team 1 has 2 members\n    Paul\n    Joe\nTeam 2 has 2 members\n    Chris\n    Emily\n');
-    })
-});
-
 describe('Test conversion of player input into the C Sharp Tuple format', function () {
     it('Test successful conversion', function () {
         var output = imageclueapi.createCSharpTuple('Paul', '441111');

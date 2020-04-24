@@ -1,6 +1,5 @@
 try {
     exports.getUrl = getUrl;
-    exports.getUserFriendlyTeams = getUserFriendlyTeams;
     exports.createCSharpTuple = createCSharpTuple;
     exports.convertTupleArrayToJSON = convertTupleArrayToJSON;
 }
