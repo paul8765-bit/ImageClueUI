@@ -84,31 +84,6 @@ function convertTupleArrayToJSON(playerArray) {
     return output;
 }
 
-function getPlayersAndMobileNumbers(table) {
-    //gets rows of table
-    var rowsArray = table.rows;
-
-    // Player/phone 2d array
-    var playerPhoneArray = new Array(rowsArray.length - 1);
-
-    //loops through rows (skipping the header row)   
-    for (currentRowIndex = 1; currentRowIndex < rowsArray.length; currentRowIndex++) {
-
-        //gets cells of current row  
-        var currentRowCells = rowsArray[currentRowIndex].cells;
-
-        var currentPlayerAndPhone = new Array(currentRowCells.length);
-
-        //loops through each cell in current row
-        for (var currentCellIndex = 0; currentCellIndex < currentRowCells.length; currentCellIndex++) {
-            currentPlayerAndPhone[currentCellIndex] = currentRowCells[currentCellIndex].innerText;
-        }
-
-        playerPhoneArray[currentRowIndex - 1] = currentPlayerAndPhone;
-    }
-    return playerPhoneArray;
-}
-
 function getElementTextContent(elementId) {
     return document.getElementById(elementId).textContent;
 }
