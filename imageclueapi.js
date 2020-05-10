@@ -1,19 +1,10 @@
-try {
-    exports.getUrl = getUrl;
-    exports.createCSharpTuple = createCSharpTuple;
-    exports.convertTupleArrayToJSON = convertTupleArrayToJSON;
-}
-catch (err) {
-    // Expect this to throw an exception in browser, but the code works in Mocha
-}
-
 function btnAddRows() {
-    var table = document.getElementById("tbl_Players");
-    var row = table.insertRow(table.rows.length);
+    const table = document.getElementById("tbl_Players");
+    const row = table.insertRow(table.rows.length);
 
     // Insert new cells (<td> elements) at the 1st and 2nd position of the "new" <tr> element:
-    var cell1 = row.insertCell(0);
-    var cell2 = row.insertCell(1);
+    const cell1 = row.insertCell(0);
+    const cell2 = row.insertCell(1);
 
     // Add some text to the new cells:
     cell1.innerHTML = '<div name="tbl_editable_name_fields" contenteditable="">player</div>';
@@ -21,21 +12,21 @@ function btnAddRows() {
 }
 
 async function btnPlayersClick() {
-    var players = getPlayersAndPhones(document.getElementById("tbl_Players"));
-    var teamID = await sendImageClueApiRequest("getteams", players);
+    const players = getPlayersAndPhones(document.getElementById("tbl_Players"));
+    const teamID = await sendImageClueApiRequest("getteams", players);
 
     // Store this teamsID in a hidden field so we can submit it to the API later
     setElementTextContent("outTeams", teamID);
 
     // Display the teams in a clear format
-    var userFriendlyTeams = await sendImageClueApiRequest("getteamsdetails", teamID);
+    const userFriendlyTeams = await sendImageClueApiRequest("getteamsdetails", teamID);
     setElementMultiLineContent("outTeamsUserFriendly", userFriendlyTeams);
 }
 
 async function btnSendSMS() {
-    var teamsID = getElementTextContent("outTeams");
-    var cluesID = getElementTextContent("outCluesHidden");
-    var smsSendResult = await sendImageClueApiRequest("sendsms", teamsID + '/' + cluesID);
+    const teamsID = getElementTextContent("outTeams");
+    const cluesID = getElementTextContent("outCluesHidden");
+    const smsSendResult = await sendImageClueApiRequest("sendsms", teamsID + '/' + cluesID);
     if (smsSendResult === 'true') {
         setElementTextContent("outSendSMSStatus", 'Successfully sent SMS messages!');
     }
@@ -47,34 +38,37 @@ async function btnSendSMS() {
 
 function getPlayersAndPhones(table) {
     //gets rows of table
-    var rowsArray = table.rows;
+    const rowsArray = table.rows;
 
     // Player 1d array
-    var playerArray = new Array(rowsArray.length - 1);
+    const playerArray = new Array(rowsArray.length - 1);
 
-    //loops through rows (skipping the header row)   
-    for (currentRowIndex = 1; currentRowIndex < rowsArray.length; currentRowIndex++) {
+    //loops through rows (skipping the header row)  
+    table.rows.forEach((entry, index) => {
+        // skip the header row
+        if (index === 0) continue;
 
-        //gets cells of current row  
-        var currentRowCells = rowsArray[currentRowIndex].cells;
+        const currentRowCells = entry.cells;
 
         // Assume that name is the first cell
-        var currentPlayerName = currentRowCells[0].innerText;
-        var currentPlayerPhone = currentRowCells[1].innerText;
-        var tuple = createCSharpTuple(currentPlayerName, currentPlayerPhone);
-        playerArray[currentRowIndex - 1] = tuple;
-    }
+        createPlayerTuple(currentRowCells[0].innerText, currentRowCells[1].innerText, playerArray, currentRowIndex);
+    });
     return convertTupleArrayToJSON(playerArray);
 }
 
-function createCSharpTuple(currentPlayerName, currentPlayerPhone) {
+export function createPlayerTuple(playerName, playerPhone, playerArray, currentRowIndex) {
+    const tuple = createCSharpTuple(playerName, playerPhone);
+    playerArray[currentRowIndex - 1] = tuple;
+}
+
+export function createCSharpTuple(currentPlayerName, currentPlayerPhone) {
     return '{"Item1":"' + currentPlayerName + '","Item2":"' + currentPlayerPhone + '"}';
 }
 
-function convertTupleArrayToJSON(playerArray) {
-    var output = '[';
-    for (playerIndex = 0; playerIndex < playerArray.length; playerIndex++) {
-        var currentPlayer = playerArray[playerIndex];
+export function convertTupleArrayToJSON(playerArray) {
+    let output = '[';
+    for (let playerIndex = 0; playerIndex < playerArray.length; playerIndex++) {
+        const currentPlayer = playerArray[playerIndex];
         output += currentPlayer;
         if (playerIndex + 1 < playerArray.length) {
             output += ',';
@@ -101,10 +95,10 @@ function setElementTextContent(elementId, text) {
 
 async function btnClues() {
     // Now do the clues request
-    var teams = getTeamsInput();
-    var cluesID = await sendImageClueApiRequest("getclues", teams);
+    const teams = getTeamsInput();
+    const cluesID = await sendImageClueApiRequest("getclues", teams);
     setElementTextContent("outCluesHidden", cluesID);
-    var userFriendlyClues = await sendImageClueApiRequest("getcluesdetails", cluesID);
+    const userFriendlyClues = await sendImageClueApiRequest("getcluesdetails", cluesID);
     setElementMultiLineContent("outClues", userFriendlyClues);
 }
 
@@ -118,14 +112,14 @@ async function sendImageClueApiRequest(apiMethod, apiParameter) {
     let fetchData = getApiHeadersAndFetchData();
     let response = await fetch(url, fetchData);
     let data = await response.text();
-    var responseString = data;
+    const responseString = data;
     console.log(responseString);
     return responseString;
 }
 
-function getUrl(apiMethod, apiParameter) {
-    var myUrl;
-    var environment = getURLParam();
+export function getUrl(apiMethod, apiParameter) {
+    let myUrl;
+    const environment = getURLParam();
     // If we're in UAT, access the UAT API
     if (environment != null && (environment === 'uat' || environment === 'UAT')) {
         myUrl = 'https://34.193.188.174:44354/imageclueapi/'
@@ -140,7 +134,7 @@ function getURLParam() {
     try {
         const queryString = window.location.search;
         const urlParams = new URLSearchParams(queryString);
-        var environment = urlParams.get("env");
+        const environment = urlParams.get("env");
         if (environment != null && environment != '') {
             return environment;
         }
@@ -155,7 +149,7 @@ function getURLParam() {
 }
 
 function getApiHeadersAndFetchData() {
-    var ourHeaders = new Headers();
+    const ourHeaders = new Headers();
     ourHeaders.append("Access-Control-Allow-Origin", "*");
     ourHeaders.append("Access-Control-Allow-Methods", "GET, POST, PATCH, PUT, DELETE, OPTIONS");
     ourHeaders.append("Access-Control-Allow-Headers", "Origin, Content-Type, X-Auth-Token");
