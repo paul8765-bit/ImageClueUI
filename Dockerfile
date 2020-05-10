@@ -18,7 +18,6 @@ RUN apk add --update nodejs
 RUN apk add --update npm
 # Install mocha using npm
 RUN npm install -g mocha
-RUN npm install esm
 # Run the Mocha unit tests
 RUN npm test
 
