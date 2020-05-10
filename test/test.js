@@ -1,10 +1,10 @@
-var assert = require('assert');
+const assert = require('assert');
 const imageclueapi = require('../imageclueapi');
 
 describe('Test getting the URL for the request', function () {
     it('should return URL for getteams', function () {
-        var url = imageclueapi.getUrl('getteams', 'Paul|Emily');
-        var expected = 'https://imageclue.co.uk:44354/imageclueapi/getteams/Paul|Emily';
+        const url = imageclueapi.getUrl('getteams', 'Paul|Emily');
+        const expected = 'https://imageclue.co.uk:44354/imageclueapi/getteams/Paul|Emily';
         assert.equal(url, expected);
     });
     it('should return URL for getclues', function () {
@@ -15,20 +15,36 @@ describe('Test getting the URL for the request', function () {
 
 describe('Test conversion of player input into the C Sharp Tuple format', function () {
     it('Test successful conversion', function () {
-        var output = imageclueapi.createCSharpTuple('Paul', '441111');
+        const output = imageclueapi.createCSharpTuple('Paul', '441111');
         assert.equal(output, '{"Item1":"Paul","Item2":"441111"}');
     })
 });
 
 describe('Test conversion of the players to a full JSON of players', function () {
     it('Test successful conversion', function () {
-        var playerArray = new Array(4);
+        const playerArray = new Array(4);
         playerArray[0] = '{"Item1":"Paul","Item2":"441111"}';
         playerArray[1] = '{"Item1":"Ben","Item2":"442222"}';
         playerArray[2] = '{"Item1":"Chris","Item2":"443333"}';
         playerArray[3] = '{"Item1":"Emily","Item2":"444444"}';
-        var output = imageclueapi.convertTupleArrayToJSON(playerArray);
-        var expected = '[{"Item1":"Paul","Item2":"441111"},{"Item1":"Ben","Item2":"442222"},{"Item1":"Chris","Item2":"443333"},{"Item1":"Emily","Item2":"444444"}]';
+        const output = imageclueapi.convertTupleArrayToJSON(playerArray);
+        const expected = '[{"Item1":"Paul","Item2":"441111"},{"Item1":"Ben","Item2":"442222"},{"Item1":"Chris","Item2":"443333"},{"Item1":"Emily","Item2":"444444"}]';
         assert.equal(output, expected);
+    })
+});
+
+describe('Test converting the player input into a tuple and adding it', function () {
+    it('Test successful conversion', function () {
+        // Setup
+        const playerArray = [];
+
+        // Run
+        imageclueapi.createPlayerTuple('Paul', '1111', playerArray, 1);
+
+        // Assert
+        assert.equal(playerArray.length, 1);
+        const playerTuple = JSON.parse(playerArray[0]);
+        assert.equal(playerTuple.Item1, 'Paul');
+        assert.equal(playerTuple.Item2, '1111');
     })
 });

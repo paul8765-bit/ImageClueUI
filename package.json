@@ -1,5 +1,26 @@
 {
   "scripts": {
-    "test": "mocha"
-  }
+    "test": "mocha -r esm"
+  },
+  "devDependencies": {
+    "esm": "^3.2.25"
+  },
+  "name": "imageclueui",
+  "version": "1.0.0",
+  "description": "UI (HTML/CSS/JS) to implement the ImageClueAPI",
+  "main": "imageclueapi.js",
+  "directories": {
+    "test": "test"
+  },
+  "dependencies": {},
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/paul8765-bit/ImageClueUI.git"
+  },
+  "author": "PD",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/paul8765-bit/ImageClueUI/issues"
+  },
+  "homepage": "https://github.com/paul8765-bit/ImageClueUI#readme"
 }
