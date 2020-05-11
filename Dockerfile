@@ -17,9 +17,9 @@ ADD nginx.conf /etc/nginx/
 #ADD ca_bundle.crt /etc/nginx/certs/
 #ADD certificate.crt /etc/nginx/certs/
 #ADD private.key /etc/nginx/certs/
-ADD ca_bundle.crt /etc/nginx/certs/
-ADD certificate.crt /etc/nginx/certs/
-ADD private.key /etc/nginx/certs/
+ADD certs/ca_bundle.crt /etc/nginx/certs/
+ADD certs/certificate.crt /etc/nginx/certs/
+ADD certs/private.key /etc/nginx/certs/
 
 # Add mime.types 
 ADD mime.types /etc/nginx/conf/

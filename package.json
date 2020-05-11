@@ -1,5 +1,22 @@
 {
   "scripts": {
     "test": "mocha"
-  }
+  },
+  "name": "imageclueui",
+  "version": "1.0.0",
+  "description": "webpage implementation (HTML/CSS/JS) of the ImageClueAPI",
+  "main": "src/imageclueapi.js",
+  "directories": {
+    "test": "test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/paul8765-bit/ImageClueUI.git"
+  },
+  "author": "PD",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/paul8765-bit/ImageClueUI/issues"
+  },
+  "homepage": "https://github.com/paul8765-bit/ImageClueUI#readme"
 }

@@ -1,5 +1,5 @@
 var assert = require('assert');
-const imageclueapi = require('../imageclueapi');
+const imageclueapi = require('../src/imageclueapi');
 
 describe('Test getting the URL for the request', function () {
     it('should return URL for getteams', function () {
