@@ -46,18 +46,20 @@ async function btnSendSMS() {
 }
 
 function getPlayersAndPhones(table) {
+    //gets rows of table
+    const rowsArray = table.rows;
+
     // Player 1d array
-    const playerArray = new Array(table.rows.length - 1);
+    const playerArray = new Array(rowsArray.length - 1);
 
     //loops through rows (skipping the header row)   
-	table.rows.forEach((currentRow, index) => {
-		// Skip the headers on the first row
-		if (index >= 1) {
-			// Assume that name is the first cell
-			playerArray[currentRowIndex - 1] = createCSharpTuple(currentRow.cells[0].innerText, currentRow.cells[1].innerText);
-		}
-	});
+    for (currentRowIndex = 1; currentRowIndex < rowsArray.length; currentRowIndex++) {
+        //gets cells of current row  
+        const currentRowCells = rowsArray[currentRowIndex].cells;
 
+        // Assume that name is the first cell
+        playerArray[currentRowIndex - 1] = createCSharpTuple(currentRowCells[0].innerText, currentRowCells[1].innerText);
+    }
     return convertTupleArrayToJSON(playerArray);
 }
 
